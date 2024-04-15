@@ -12,8 +12,10 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
         const hashedToken = await bcrypt.hash(userId.toString(), 10);
         if (emailType === "VERIFY") {
             await User.findByIdAndUpdate(userId, {
-                verifyToken: hashedToken,
-                verifyTokenExpiry: Date.now() + 3600000
+                $set: {
+                    verifyToken: hashedToken,
+                    verifyTokenExpiry: Date.now() + 3600000
+                }
             });
             html = `<p>Click <a href="${process.env.DOMAIN}/verify-email?token=${hashedToken}">here</a> verify your email
             or copy and paste the link below in your browser. <br>${process.env.DOMAIN}/verify-email?token=${hashedToken}
