@@ -5,7 +5,7 @@ import Input from "../components/Input";
 import Link from "next/link";
 import Button from "../components/Button";
 import toast, { Toaster } from "react-hot-toast";
-import ToasterComp from "../components/ToasterComp";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [user, setUser] = useState({
@@ -14,6 +14,7 @@ export default function LoginPage() {
     })
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleOnSignIn = async (e: React.FormEvent) => {
         try {
@@ -24,9 +25,12 @@ export default function LoginPage() {
             toast.success(response.data.message);
             setLoading(false);
             setUser({ email: '', password: '' });
-        } catch (error) {
+            router.push('/profile');
+        } catch (error: any) {
             setLoading(false);
             console.error("Sign In Failed");
+            console.error(error);
+            toast.error(error.response.data.message);
         }
     }
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -29,10 +29,10 @@ export default function SignupPage() {
             setUser({ email: '', password: '', username: '' });
             toast.success(response.data.message);
             router.push('/login');
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false);
             console.error("Sign Up Failed");
-            toast.error("Sign Up Failed");
+            toast.error(error.response.data.message);
         }
     }
 
